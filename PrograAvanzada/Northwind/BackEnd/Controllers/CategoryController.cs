@@ -19,10 +19,10 @@ namespace BackEnd.Controllers
         {
             categoryDAL = new CategoryDALImpl(new Entities.Entities.NorthWindContext());
         }
-        #endregion         #region Consultar
+        #endregion       
 
 
-        #region Consultat
+        #region Consultar
         // GET: api/<CategoryController>
         [HttpGet]
         public JsonResult Get()
