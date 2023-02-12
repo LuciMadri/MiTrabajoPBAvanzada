@@ -1,76 +1,122 @@
 ﻿using BackEnd.DAL;
+using BackEnd.Models;
 using DAL.Implementations;
 using DAL.Interfaces;
 using Entities.Entities;
-using Microsoft.AspNetCore.Mvc; // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860 
-namespace BackEnd.Controllers
+using Microsoft.AspNetCore.Mvc;
 
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+namespace BackEnd.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ShipperController : ControllerBase
+    public class ShippersConroller : ControllerBase
     {
+
         private IShippersDAL shippersDAL;
 
+        #region Convertir
+        private ShippersModel Convertir(Shipper entity)
+        {
+            return new ShippersModel
+            {
+                ShipperId = entity.ShipperId,
+                CompanyName = entity.CompanyName,
+                Phone = entity.Phone
 
+            };
+        }
+
+
+        private Shipper Convertir(ShippersModel model)
+        {
+            return new Shipper
+            {
+                ShipperId = model.ShipperId,
+                CompanyName = model.CompanyName,
+                Phone = model.Phone
+
+            };
+        }
+        #endregion
 
         #region Constructor
-        public ShipperController()
+        public ShippersConroller()
         {
             shippersDAL = new ShippersDALImpl(new Entities.Entities.NorthWindContext());
-        }
-        #endregion       
 
+        }
+        #endregion
 
         #region Consultar
-        // GET: api/<ShippersController>
+        // GET: api/<CategoryController>
         [HttpGet]
         public JsonResult Get()
         {
             IEnumerable<Shipper> shippers = shippersDAL.GetAll();
-            return new JsonResult(shippers);
-        }         // GET api/<ShippersController>/5
 
+            List <ShippersModel> lista = new List<ShippersModel>();
 
+            foreach (var shipper in shippers)
+            {
+                lista.Add(Convertir(shipper));
+            }
+            return new JsonResult(lista);
+        }
+
+        // GET api/<CategoryController>/5
         [HttpGet("{id}")]
         public JsonResult Get(int id)
         {
-            Shipper shippers;
-            shippers = shippersDAL.Get(id);
-            return new JsonResult(shippers);
+            Shipper shipper;
+            shipper = shippersDAL.Get(id);
+
+            return new JsonResult(Convertir(shipper));
+
         }
         #endregion
 
-
         #region Agregar
-        // POST api/<ShippersController>
+        // POST api/<ShipperController>
         [HttpPost]
-        public JsonResult Post([FromBody] Shipper shippers)
+        public JsonResult Post([FromBody] ShippersModel shipper)
         {
-            shippersDAL.Add(shippers);
-            return new JsonResult(shippers);
+
+            Shipper entity = Convertir(shipper);
+            shippersDAL.Add(entity);
+            return new JsonResult(Convertir(shipper));
+
         }
+
         #endregion
 
         #region Modificar
-        // PUT api/<ShippersController>/5
+        // PUT api/<CategoryController>/5
         [HttpPut]
-        public JsonResult Put([FromBody] Shipper shippers)
+        public JsonResult Put([FromBody] CategoryModel category)
         {
-            shippersDAL.Update(shippers);
-            return new JsonResult(shippers);
+
+            categoryDAL.Update(Convertir(category));
+            return new JsonResult(Convertir(category));
+
         }
         #endregion
 
-
         #region Eliminar
-        // DELETE api/<ShippersController>/5
+        // DELETE api/<CategoryController>/5
         [HttpDelete("{id}")]
         public JsonResult Delete(int id)
         {
-            Shipper shipper = new Shipper { ShipperId = id };
-            shippersDAL.Remove(shipper); return new JsonResult(shipper);
+            Category category = new Category { CategoryId = id };
+            categoryDAL.Remove(category);
+
+            return new JsonResult(Convertir(category));
+
+
         }
+
+
         #endregion
     }
 }

@@ -15,12 +15,20 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\User\Desktop\Programación Avanzada en Web\MiTrabajoPBAvanzada\PrograAvanzada\Northwind\FrontEnd
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/User/Desktop/Programación Avanzada en Web/MiTrabajoPBAvanzada/PrograAvanzada/Northwind/FrontEnd/Views/Category/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/User/Desktop/Programación Avanzada en Web/MiTrabajoPBAvanzada/PrograAvanzada/Northwind/FrontEnd/Views/Category/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/User/Desktop/Programación Avanzada en Web/MiTrabajoPBAvanzada/PrograAvanzada/Northwind/FrontEnd/Views/Category/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Desktop/Programación Avanzada en Web/MiTrabajoPBAvanzada/PrograAvanzada/Northwind/FrontEnd/Views/Category/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/User/Desktop/Programación Avanzada en Web/MiTrabajoPBAvanzada/PrograAvanzada/Northwind/FrontEnd/Views/Category/Index.cshtml]
