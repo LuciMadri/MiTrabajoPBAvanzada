@@ -3,19 +3,21 @@ using BackEnd.Models;
 using DAL.Implementations;
 using DAL.Interfaces;
 using Entities.Entities;
-using Microsoft.AspNetCore.Mvc; // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860 
-namespace BackEnd.Controllers
+using Microsoft.AspNetCore.Mvc;
 
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+namespace BackEnd.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
+
         private ICategoryDAL categoryDAL;
 
-
-        #region
-        public CategoryModel Convertir(Category entity)
+        #region Convertir
+        private CategoryModel Convertir(Category entity)
         {
             return new CategoryModel
             {
@@ -27,17 +29,27 @@ namespace BackEnd.Controllers
             };
         }
 
+
+        private Category Convertir(CategoryModel model)
+        {
+            return new Category
+            {
+                CategoryId = model.CategoryId,
+                CategoryName = model.CategoryName,
+                Description = model.Description
+
+
+            };
+        }
         #endregion
-
-
 
         #region Constructor
         public CategoryController()
         {
             categoryDAL = new CategoryDALImpl(new Entities.Entities.NorthWindContext());
-        }
-        #endregion       
 
+        }
+        #endregion
 
         #region Consultar
         // GET: api/<CategoryController>
@@ -50,60 +62,52 @@ namespace BackEnd.Controllers
 
             foreach (var category in categories)
             {
-                lista.Add(
-                    new CategoryModel
-                    {
-                        CategoryId = category.CategoryId,
-                        CategoryName = category.CategoryName,
-                        Description = category.Description
-                    }
+                lista.Add(Convertir(category)
+
                     );
             }
-
-            return new JsonResult(categories);
+            return new JsonResult(lista);
         }
 
         // GET api/<CategoryController>/5
-
         [HttpGet("{id}")]
-
         public JsonResult Get(int id)
         {
             Category category;
             category = categoryDAL.Get(id);
 
-            CategoryModel model = new CategoryModel
-            {
-                CategoryId = id,
-                CategoryName = category.CategoryName,
-                Description = category.Description
-            };
 
-            return new JsonResult(model);
+
+            return new JsonResult(Convertir(category));
+
         }
         #endregion
-
 
         #region Agregar
         // POST api/<CategoryController>
         [HttpPost]
-        public JsonResult Post([FromBody] Category category)
+        public JsonResult Post([FromBody] CategoryModel category)
         {
-            categoryDAL.Add(category);
-            return new JsonResult(category);
+
+            Category entity = Convertir(category);
+            categoryDAL.Add(entity);
+            return new JsonResult(Convertir(entity));
+
         }
+
         #endregion
 
         #region Modificar
         // PUT api/<CategoryController>/5
         [HttpPut]
-        public JsonResult Put([FromBody] Category category)
+        public JsonResult Put([FromBody] CategoryModel category)
         {
-            categoryDAL.Update(category);
-            return new JsonResult(category);
+
+            categoryDAL.Update(Convertir(category));
+            return new JsonResult(Convertir(category));
+
         }
         #endregion
-
 
         #region Eliminar
         // DELETE api/<CategoryController>/5
@@ -112,11 +116,13 @@ namespace BackEnd.Controllers
         {
             Category category = new Category { CategoryId = id };
             categoryDAL.Remove(category);
-            return new JsonResult(category);
+
+            return new JsonResult(Convertir(category));
+
+
         }
+
+
         #endregion
-
-
-
     }
 }

@@ -45,25 +45,30 @@ namespace FrontEnd.Helpers
         }
 
 
-        public CategoryViewModel Delete(int id)
+        public CategoryViewModel Create(CategoryViewModel category)
         {
 
-            CategoryViewModel category;
+            CategoryViewModel Category;
 
-            HttpResponseMessage responseMessage = ServiceRepository.DeleteResponse("api/category/" + id.ToString());
+            HttpResponseMessage responseMessage = ServiceRepository.PostResponse("api/category/", category);
             var content = responseMessage.Content.ReadAsStringAsync().Result;
+            Category = JsonConvert.DeserializeObject<CategoryViewModel>(content);
 
-            category = JsonConvert.DeserializeObject<CategoryViewModel>(content);
+            return Category;
 
-            return category;
         }
 
-        public CategoryViewModel Edit(int id)
+
+
+
+        public CategoryViewModel Edit(CategoryViewModel category)
         {
+
+
             CategoryViewModel Category;
 
 
-            HttpResponseMessage responseMessage = ServiceRepository.GetResponse("api/category/" + id.ToString());
+            HttpResponseMessage responseMessage = ServiceRepository.PutResponse("api/category/", category);
             var content = responseMessage.Content.ReadAsStringAsync().Result;
             Category = JsonConvert.DeserializeObject<CategoryViewModel>(content);
 
@@ -74,5 +79,26 @@ namespace FrontEnd.Helpers
 
 
 
+        public CategoryViewModel Delete(int id)
+        {
+
+
+            CategoryViewModel Category;
+
+
+            HttpResponseMessage responseMessage = ServiceRepository.DeleteResponse("api/category/" + id.ToString());
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            Category = JsonConvert.DeserializeObject<CategoryViewModel>(content);
+
+
+
+            return Category;
+        }
+
     }
+
+
+
+
 }
+
