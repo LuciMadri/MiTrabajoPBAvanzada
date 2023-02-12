@@ -1,4 +1,5 @@
 ﻿using BackEnd.DAL;
+using BackEnd.Models;
 using DAL.Implementations;
 using DAL.Interfaces;
 using Entities.Entities;
@@ -11,6 +12,22 @@ namespace BackEnd.Controllers
     public class CategoryController : ControllerBase
     {
         private ICategoryDAL categoryDAL;
+
+
+        #region
+        public CategoryModel Convertir(Category entity)
+        {
+            return new CategoryModel
+            {
+                CategoryId = entity.CategoryId,
+                CategoryName = entity.CategoryName,
+                Description = entity.Description
+
+
+            };
+        }
+
+        #endregion
 
 
 
@@ -28,14 +45,41 @@ namespace BackEnd.Controllers
         public JsonResult Get()
         {
             IEnumerable<Category> categories = categoryDAL.GetAll();
+
+            List<CategoryModel> lista = new List<CategoryModel>();
+
+            foreach (var category in categories)
+            {
+                lista.Add(
+                    new CategoryModel
+                    {
+                        CategoryId = category.CategoryId,
+                        CategoryName = category.CategoryName,
+                        Description = category.Description
+                    }
+                    );
+            }
+
             return new JsonResult(categories);
-        }         // GET api/<CategoryController>/5
+        }
+
+        // GET api/<CategoryController>/5
+
         [HttpGet("{id}")]
+
         public JsonResult Get(int id)
         {
             Category category;
             category = categoryDAL.Get(id);
-            return new JsonResult(category);
+
+            CategoryModel model = new CategoryModel
+            {
+                CategoryId = id,
+                CategoryName = category.CategoryName,
+                Description = category.Description
+            };
+
+            return new JsonResult(model);
         }
         #endregion
 
@@ -67,8 +111,12 @@ namespace BackEnd.Controllers
         public JsonResult Delete(int id)
         {
             Category category = new Category { CategoryId = id };
-            categoryDAL.Remove(category); return new JsonResult(category);
+            categoryDAL.Remove(category);
+            return new JsonResult(category);
         }
         #endregion
+
+
+
     }
 }
