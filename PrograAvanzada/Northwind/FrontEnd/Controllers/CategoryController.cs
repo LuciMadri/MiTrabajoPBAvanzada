@@ -31,17 +31,21 @@ namespace FrontEnd.Controllers
         // GET: CategoryController/Create
         public ActionResult Create()
         {
+
             return View();
         }
 
         // POST: CategoryController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(CategoryViewModel category)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                categoryHelper = new CategoryHelper();
+                category = categoryHelper.Create(category);
+
+                return RedirectToAction("Details", new { id = category.CategoryId });
             }
             catch
             {
@@ -53,8 +57,7 @@ namespace FrontEnd.Controllers
         public ActionResult Edit(int id)
         {
             categoryHelper = new CategoryHelper();
-
-            CategoryViewModel category = categoryHelper.Edit(id);
+            CategoryViewModel category = categoryHelper.Get(id);
 
             return View(category);
         }
@@ -62,14 +65,13 @@ namespace FrontEnd.Controllers
         // POST: CategoryController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(CategoryViewModel category)
         {
-
             try
             {
-                categoryHelper = new CategoryHelper();
+                CategoryHelper categoryHelper = new CategoryHelper();
+                category = categoryHelper.Edit(category);
 
-                CategoryViewModel category = categoryHelper.Edit(id);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -79,12 +81,10 @@ namespace FrontEnd.Controllers
             }
         }
 
-        //// GET: CategoryController/Delete/5
-        [HttpGet]
+        // GET: CategoryController/Delete/5
         public ActionResult Delete(int id)
         {
             categoryHelper = new CategoryHelper();
-
             CategoryViewModel category = categoryHelper.Get(id);
 
             return View(category);
@@ -93,13 +93,13 @@ namespace FrontEnd.Controllers
         // POST: CategoryController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(CategoryViewModel category)
         {
             try
             {
                 categoryHelper = new CategoryHelper();
+                categoryHelper.Delete(category.CategoryId);
 
-                CategoryViewModel category = categoryHelper.Delete(id);
 
                 return RedirectToAction(nameof(Index));
             }
