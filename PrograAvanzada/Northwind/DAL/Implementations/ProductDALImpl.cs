@@ -9,33 +9,29 @@ using System.Threading.Tasks;
 
 namespace DAL.Implementations
 {
-    public class CategoryDALImpl : ICategoryDAL
+    public class ProductDALImpl : IProductDAL
     {
+        private UnidadDeTrabajo<Product> unidad;
+       
+        
         NorthWindContext context;
-
-
-        public CategoryDALImpl()
+        
+        
+        
+        public ProductDALImpl(NorthWindContext context)
         {
-            context = new NorthWindContext();
-
+            this.context = context;
         }
 
-        public CategoryDALImpl(NorthWindContext _Context)
-        {
-            context = _Context;
-
-        }
-
-        public bool Add(Category entity)
+        public bool Add(Product entity)
         {
             try
             {
-                using (UnidadDeTrabajo<Category> unidad = new UnidadDeTrabajo<Category>(context))
+                using (unidad = new UnidadDeTrabajo<Product>(context))
                 {
                     unidad.genericDAL.Add(entity);
                     unidad.Complete();
                 }
-
 
                 return true;
             }
@@ -46,52 +42,42 @@ namespace DAL.Implementations
             }
         }
 
-        public void AddRange(IEnumerable<Category> entities)
+        public void AddRange(IEnumerable<Product> entities)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Category> Find(Expression<Func<Category, bool>> predicate)
+        public IEnumerable<Product> Find(Expression<Func<Product, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public Category Get(int id)
+        public Product Get(int id)
         {
-            Category category;
-            using (UnidadDeTrabajo<Category> unidad = new UnidadDeTrabajo<Category>(context))
+            Product product = null;
+            using (unidad= new UnidadDeTrabajo<Product>(context))
             {
-               
-                category= unidad.genericDAL.Get(id);
+                product = unidad.genericDAL.Get(id);
             }
-            return category;
-
+            return product;
         }
 
-        public IEnumerable<Category> GetAll()
+        public IEnumerable<Product> GetAll()
         {
-            try
+            IEnumerable<Product> products = null;
+            using (unidad = new UnidadDeTrabajo<Product>(context))
             {
-                IEnumerable<Category> categories;
-                using (UnidadDeTrabajo<Category> unidad = new UnidadDeTrabajo<Category>(context))
-                {
-                    categories = unidad.genericDAL.GetAll();
-                }
-                return categories;
+                products = unidad.genericDAL.GetAll();
             }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            return products;
         }
 
-        public bool Remove(Category entity)
+        public bool Remove(Product entity)
         {
             bool result = false;
             try
             {
-                using (UnidadDeTrabajo<Category> unidad = new UnidadDeTrabajo<Category>(context))
+                using ( unidad = new UnidadDeTrabajo<Product>(context))
                 {
                     unidad.genericDAL.Remove(entity);
                     result = unidad.Complete();
@@ -107,23 +93,23 @@ namespace DAL.Implementations
             return result;
         }
 
-        public void RemoveRange(IEnumerable<Category> entities)
+        public void RemoveRange(IEnumerable<Product> entities)
         {
             throw new NotImplementedException();
         }
 
-        public Category SingleOrDefault(Expression<Func<Category, bool>> predicate)
+        public Product SingleOrDefault(Expression<Func<Product, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(Category entity)
+        public bool Update(Product entity)
         {
             bool result = false;
 
             try
             {
-                using (UnidadDeTrabajo<Category> unidad = new UnidadDeTrabajo<Category>(context))
+                using (UnidadDeTrabajo<Product> unidad = new UnidadDeTrabajo<Product>(context))
                 {
                     unidad.genericDAL.Update(entity);
                     result = unidad.Complete();

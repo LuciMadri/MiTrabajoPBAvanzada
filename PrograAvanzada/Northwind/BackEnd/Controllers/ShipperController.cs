@@ -1,9 +1,8 @@
-﻿using BackEnd.DAL;
-using BackEnd.Models;
-using DAL.Implementations;
+﻿using DAL.Implementations;
 using DAL.Interfaces;
 using Entities.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,111 +10,74 @@ namespace BackEnd.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ShippersConroller : ControllerBase
+    public class ShipperController : ControllerBase
     {
+        private IShipperDAL shipperDAL;
 
-        private IShippersDAL shippersDAL;
-
-        #region Convertir
-        private ShippersModel Convertir(Shipper entity)
+        public ShipperController()
         {
-            return new ShippersModel
-            {
-                ShipperId = entity.ShipperId,
-                CompanyName = entity.CompanyName,
-                Phone = entity.Phone
-
-            };
+            shipperDAL = new ShipperDALImpl(new NorthWindContext());
         }
-
-
-        private Shipper Convertir(ShippersModel model)
-        {
-            return new Shipper
-            {
-                ShipperId = model.ShipperId,
-                CompanyName = model.CompanyName,
-                Phone = model.Phone
-
-            };
-        }
-        #endregion
-
-        #region Constructor
-        public ShippersConroller()
-        {
-            shippersDAL = new ShippersDALImpl(new Entities.Entities.NorthWindContext());
-
-        }
-        #endregion
 
         #region Consultar
-        // GET: api/<CategoryController>
+        // GET: api/<ShipperController>
         [HttpGet]
         public JsonResult Get()
         {
-            IEnumerable<Shipper> shippers = shippersDAL.GetAll();
+           
+            IEnumerable<Shipper> shippers= shipperDAL.GetAll();
 
-            List <ShippersModel> lista = new List<ShippersModel>();
 
-            foreach (var shipper in shippers)
-            {
-                lista.Add(Convertir(shipper));
-            }
-            return new JsonResult(lista);
+            return new JsonResult(shippers);
         }
 
-        // GET api/<CategoryController>/5
+        // GET api/<ShipperController>/5
         [HttpGet("{id}")]
         public JsonResult Get(int id)
         {
-            Shipper shipper;
-            shipper = shippersDAL.Get(id);
 
-            return new JsonResult(Convertir(shipper));
-
+            Shipper shipper = shipperDAL.Get(id);
+            return new JsonResult(shipper);
         }
+
         #endregion
 
         #region Agregar
+
         // POST api/<ShipperController>
         [HttpPost]
-        public JsonResult Post([FromBody] ShippersModel shipper)
+        public JsonResult Post([FromBody] Shipper shipper)
         {
-
-            Shipper entity = Convertir(shipper);
-            shippersDAL.Add(entity);
-            return new JsonResult(Convertir(shipper));
+            shipperDAL.Add(shipper);
+            return new JsonResult(shipper);
 
         }
 
         #endregion
-
-        #region Modificar
-        // PUT api/<CategoryController>/5
+        
+        #region Actualizar
         [HttpPut]
-        public JsonResult Put([FromBody] ShippersModel shipper)
+        public JsonResult Put([FromBody] Shipper shipper)
         {
 
-            shippersDAL.Update(Convertir(shipper));
-            return new JsonResult(Convertir(shipper));
+            shipperDAL.Add(shipper);
+            return new JsonResult(shipper);
 
         }
+
         #endregion
+
 
         #region Eliminar
-        // DELETE api/<CategoryController>/5
+        // DELETE api/<ShipperController>/5
         [HttpDelete("{id}")]
-        public JsonResult Delete(int id)
+        public void Delete(int id)
         {
-            Shipper shipper = new Shipper { ShipperId = id };
-            shippersDAL.Remove(shipper);
-
-            return new JsonResult(Convertir(shipper));
+            Shipper shipper = new Shipper { ShipperId= id };
+            shipperDAL.Remove(shipper);
 
 
         }
-
 
         #endregion
     }

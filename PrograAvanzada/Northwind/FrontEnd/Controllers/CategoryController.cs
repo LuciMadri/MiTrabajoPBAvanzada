@@ -23,7 +23,7 @@ namespace FrontEnd.Controllers
         public ActionResult Details(int id)
         {
             categoryHelper = new CategoryHelper();
-            CategoryViewModel category = categoryHelper.Get(id);
+            CategoryViewModel category = categoryHelper.Get(id);    
 
             return View(category);
         }
@@ -31,7 +31,7 @@ namespace FrontEnd.Controllers
         // GET: CategoryController/Create
         public ActionResult Create()
         {
-
+            
             return View();
         }
 
@@ -43,9 +43,9 @@ namespace FrontEnd.Controllers
             try
             {
                 categoryHelper = new CategoryHelper();
-                category = categoryHelper.Create(category);
+                 category = categoryHelper.Create(category);
 
-                return RedirectToAction("Details", new { id = category.CategoryId });
+                return RedirectToAction("Details", new {id=category.CategoryID});
             }
             catch
             {
@@ -70,7 +70,7 @@ namespace FrontEnd.Controllers
             try
             {
                 CategoryHelper categoryHelper = new CategoryHelper();
-                category = categoryHelper.Edit(category);
+                category=categoryHelper.Edit(category);
 
 
                 return RedirectToAction(nameof(Index));
@@ -98,7 +98,7 @@ namespace FrontEnd.Controllers
             try
             {
                 categoryHelper = new CategoryHelper();
-                categoryHelper.Delete(category.CategoryId);
+                categoryHelper.Delete(category.CategoryID);
 
 
                 return RedirectToAction(nameof(Index));

@@ -1,4 +1,19 @@
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
+
+#region Serilog
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Host.UseSerilog((ctx, lc)=> lc
+    .WriteTo.File("logs/LogsBackEnd.txt", rollingInterval: RollingInterval.Day)
+    .MinimumLevel.Debug()
+    );
+
+
+#endregion
+
+
 
 // Add services to the container.
 

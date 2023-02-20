@@ -11,7 +11,7 @@ namespace FrontEnd.Helpers
 
         public CategoryHelper()
         {
-            ServiceRepository = new ServiceRepository();
+            ServiceRepository= new ServiceRepository();
         }
 
 
@@ -23,7 +23,7 @@ namespace FrontEnd.Helpers
 
             HttpResponseMessage responseMessage = ServiceRepository.GetResponse("api/category/");
             var content = responseMessage.Content.ReadAsStringAsync().Result;
-            lista = JsonConvert.DeserializeObject<List<CategoryViewModel>>(content);
+            lista= JsonConvert.DeserializeObject<List<CategoryViewModel>>(content);
 
 
 
@@ -45,14 +45,13 @@ namespace FrontEnd.Helpers
         }
 
 
-        public CategoryViewModel Create(CategoryViewModel category)
-        {
+        public CategoryViewModel Create(CategoryViewModel category) {
 
 
             CategoryViewModel Category;
 
 
-            HttpResponseMessage responseMessage = ServiceRepository.PostResponse("api/category/", category);
+            HttpResponseMessage responseMessage = ServiceRepository.PostResponse("api/category/" ,category);
             var content = responseMessage.Content.ReadAsStringAsync().Result;
             Category = JsonConvert.DeserializeObject<CategoryViewModel>(content);
 
@@ -98,10 +97,10 @@ namespace FrontEnd.Helpers
             return Category;
         }
 
+    } 
+
+
+
+
     }
-
-
-
-
-}
 
