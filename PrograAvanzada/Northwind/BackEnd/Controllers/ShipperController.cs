@@ -94,11 +94,11 @@ namespace BackEnd.Controllers
         #region Modificar
         // PUT api/<CategoryController>/5
         [HttpPut]
-        public JsonResult Put([FromBody] CategoryModel category)
+        public JsonResult Put([FromBody] ShippersModel shipper)
         {
 
-            categoryDAL.Update(Convertir(category));
-            return new JsonResult(Convertir(category));
+            shippersDAL.Update(Convertir(shipper));
+            return new JsonResult(Convertir(shipper));
 
         }
         #endregion
@@ -108,10 +108,10 @@ namespace BackEnd.Controllers
         [HttpDelete("{id}")]
         public JsonResult Delete(int id)
         {
-            Category category = new Category { CategoryId = id };
-            categoryDAL.Remove(category);
+            Shipper shipper = new Shipper { ShipperId = id };
+            shippersDAL.Remove(shipper);
 
-            return new JsonResult(Convertir(category));
+            return new JsonResult(Convertir(shipper));
 
 
         }
